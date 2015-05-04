@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Smartwatch Interaction</string>
+    <string name="close">close</string>
+
+    <string name="card_activity">UI with card</string>
+    <string name="vote">Is this useful?</string>
+    <string name="vote_succeeded">Thanks for the vote!</string>
+</resources>
