@@ -16,6 +16,8 @@ import java.util.Objects;
 
 public class MainActivity extends Activity {
 
+    int NOTIFICATION_ID = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,29 +61,23 @@ public class MainActivity extends Activity {
 
     }
 
-
     public void createStandardNotification(String locationName) {
-
-        int notificationId = 1;
 
         CharSequence title = getString(getResources().getIdentifier(locationName, "string", getPackageName()));
 
-        // Build Main Intent
-        Intent openIntent = new Intent(this, MainActivity.class);
-        openIntent.putExtra("notification_id", notificationId);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, openIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
         // Create an intent for the vote_up action
-        Intent actionIntent = new Intent(this, MainActivity.class); // Switch to Vote Activity
-        actionIntent.putExtra(getString(R.string.close), true);
+        Intent actionIntent = new Intent(this, NullActivity.class); // Switch to Vote Activity
         PendingIntent actionPendingIntent =
-                PendingIntent.getActivity(this, 0, actionIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(this, 0, actionIntent, 0);
 
         // Create the action
-        NotificationCompat.Action action =
-                new NotificationCompat.Action.Builder(R.drawable.thumb_up,
+        NotificationCompat.Action actionVoteUp =
+                new NotificationCompat.Action.Builder(R.drawable.thumb_up_white,
                         getString(R.string.vote_up), actionPendingIntent)
+                        .build();
+        NotificationCompat.Action actionVoteDown =
+                new NotificationCompat.Action.Builder(((.) R.drawable.thumb_down_white),
+                        getString(R.string.vote_down), actionPendingIntent)
                         .build();
 
         // Build Main Notification
@@ -90,24 +86,36 @@ public class MainActivity extends Activity {
                         // SmallIcon is only for the Notification on the Phone
                         // App Icon for Wear is used on the smartwatch
                         //.setSmallIcon(R.mipmap.ic_launcher)
-                        .setSmallIcon(R.drawable.thumb_up)
+                        .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(
                                 getResources(), R.drawable.tum))
                         .setContentTitle(title)
                         .setContentText(getString(R.string.notification_text))
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setAutoCancel(true)
-                        .setContentIntent(pendingIntent)
-                        .extend(new NotificationCompat.WearableExtender().addAction(action));
+                        .extend(new NotificationCompat.WearableExtender()
+                                        .addAction(actionVoteUp)
+                                        .addAction(actionVoteDown)
+//                                        .setContentAction(0)
+//                                        .setContentIcon(R.drawable.thumb_up_100)
+                        );
 
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
                 NotificationManagerCompat.from(this);
 
         // Build the notification and issues it with notification manager.
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
 
+    }
 
+    public void createTwoButtonNotification(String locationName) {
+
+        CharSequence title = getString(getResources().getIdentifier(locationName, "string", getPackageName()));
+
+        Intent notificationIntent = new Intent(this, NullActivity.class);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }
