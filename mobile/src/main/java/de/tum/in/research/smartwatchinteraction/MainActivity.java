@@ -76,19 +76,14 @@ public class MainActivity extends Activity {
                         getString(R.string.vote_up), actionPendingIntent)
                         .build();
         NotificationCompat.Action actionVoteDown =
-                new NotificationCompat.Action.Builder(((.) R.drawable.thumb_down_white),
+                new NotificationCompat.Action.Builder(R.drawable.thumb_down_white,
                         getString(R.string.vote_down), actionPendingIntent)
                         .build();
 
         // Build Main Notification
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
-                        // SmallIcon is only for the Notification on the Phone
-                        // App Icon for Wear is used on the smartwatch
-                        //.setSmallIcon(R.mipmap.ic_launcher)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setLargeIcon(BitmapFactory.decodeResource(
-                                getResources(), R.drawable.tum))
                         .setContentTitle(title)
                         .setContentText(getString(R.string.notification_text))
                         .setDefaults(Notification.DEFAULT_ALL)
@@ -96,6 +91,9 @@ public class MainActivity extends Activity {
                         .extend(new NotificationCompat.WearableExtender()
                                         .addAction(actionVoteUp)
                                         .addAction(actionVoteDown)
+                                        .setBackground(BitmapFactory.decodeResource(
+                                                getResources(), R.drawable.mensa_leopoldstrasse
+                                        ))
 //                                        .setContentAction(0)
 //                                        .setContentIcon(R.drawable.thumb_up_100)
                         );

@@ -13,9 +13,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tum_mensa"
+        android:text="@string/lmu_mensa"
         android:id="@+id/button_create_notification_standard_tum_mensa"
-        android:tag="standard:tum_mensa"
+        android:tag="standard:lmu_mensa"
         android:layout_below="@+id/heading_standard_notification"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />

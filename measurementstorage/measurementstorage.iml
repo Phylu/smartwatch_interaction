@@ -87,7 +87,5 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="play-services-wearable-7.0.0" level="project" />
-    <orderEntry type="library" name="play-services-base-7.0.0" level="project" />
   </component>
 </module>
