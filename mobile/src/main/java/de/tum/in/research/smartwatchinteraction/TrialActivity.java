@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ public abstract class TrialActivity extends Activity {
     protected  SharedPreferences settings;
     protected Participant participant;
 
+    TextView headingTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,8 @@ public abstract class TrialActivity extends Activity {
 
         settings = getSharedPreferences(PREFS_NAME, 0);
         setContentView(R.layout.activity_trial);
+
+        headingTextView = (TextView) findViewById(R.id.heading_notification);
     }
 
     @Override
@@ -35,22 +40,25 @@ public abstract class TrialActivity extends Activity {
         super.onResume();
     }
 
-
-
-
     private void activateButton() {
         ImageButton forwardButton = (ImageButton) findViewById(R.id.forward_button);
         forwardButton.setBackground(getResources().getDrawable(R.drawable.arrow_right));
 
-        // TODO: Add button listener
+        forwardButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                forwardButtonClick(v);
+            }
+        });
     }
 
     private void deactivateButton() {
-        // TODO: Remove Button listener
-
-
         ImageButton forwardButton = (ImageButton) findViewById(R.id.forward_button);
         forwardButton.setBackground(getResources().getDrawable(R.drawable.arrow_right_grey));
+
+        forwardButton.setOnClickListener(null);
     }
+
+    public abstract void createNotification(View view);
+    public abstract void forwardButtonClick(View view);
 
 }
