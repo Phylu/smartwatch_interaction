@@ -1,8 +1,23 @@
 <resources>
     <string name="app_name">Lunch Checker</string>
     <string name="close">close</string>
+    <string name="two_button_notification">Two Button Notification</string>
+    <string name="swipe_notification">Swipe Notification</string>
 
     <string name="card_activity">UI with card</string>
     <string name="vote">Is this useful?</string>
     <string name="vote_succeeded">Thanks for the vote!</string>
+
+    <!-- Different Recommendations -->
+    <string name="tum_mensa">TUM Mensa</string>
+    <string name="tum_cafeteria">TUM MA/IN Cafeteria</string>
+    <string name="tum_doener">TUM Dönerstand</string>
+    <string name="lmu_mensa">Mensa Leopoldstraße</string>
+    <string name="lmu_cafeteria">LMU Cafeteria</string>
+    <string name="lmu_losteria">LMU L\'Osteria</string>
+
+    <!-- Benachrichtigungen -->
+    <string name="notification_text">Hier könntest du Mittagessen gehen.</string>
+    <string name="vote_up">Gefällt mir!</string>
+    <string name="vote_down">Gefällt mir nicht!</string>
 </resources>

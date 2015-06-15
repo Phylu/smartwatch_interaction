@@ -15,7 +15,7 @@ public class TwoButtonNotificationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two_button_notification);
-        System.out.println("Started Main Activity");
+        System.out.println("Started Tow Button Activity");
     }
 
 
