@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">Lunch Checker</string>
+    <string name="create_vpn">Start trial with new Participant</string>
+    <string name="forwar">Next</string>
 
     <string name="action_settings">Settings</string>
     <string name="close">close</string>
 
     <!-- Different Notification Types -->
-    <string name="standard_notification">Standard Android Wear Notification</string>
+    <string name="action_button_notification">Action Button Notification</string>
+    <string name="two_button_notification">Two Button Notification</string>
+    <string name="swipe_notification">Swipe Notification</string>
 
     <!-- Different Recommendations -->
     <string name="tum_mensa">TUM Mensa</string>

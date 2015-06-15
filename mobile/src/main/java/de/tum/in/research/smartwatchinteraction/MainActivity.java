@@ -94,8 +94,6 @@ public class MainActivity extends Activity {
                                         .setBackground(BitmapFactory.decodeResource(
                                                 getResources(), R.drawable.mensa_leopoldstrasse
                                         ))
-//                                        .setContentAction(0)
-//                                        .setContentIcon(R.drawable.thumb_up_100)
                         );
 
         // Get an instance of the NotificationManager service
@@ -108,12 +106,11 @@ public class MainActivity extends Activity {
     }
 
     public void createTwoButtonNotification(String locationName) {
+        // TODO: send message to wear device
+    }
 
-        CharSequence title = getString(getResources().getIdentifier(locationName, "string", getPackageName()));
-
-        Intent notificationIntent = new Intent(this, NullActivity.class);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+    public void createSwipeNotification(String locationName) {
+        // TODO: send message to wear device
     }
 
 }
