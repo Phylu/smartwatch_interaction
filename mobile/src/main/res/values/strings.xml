@@ -15,12 +15,9 @@
     <string name="swipe_notification">Swipe Notification</string>
 
     <!-- Different Recommendations -->
-    <string name="tum_mensa">TUM Mensa</string>
-    <string name="tum_cafeteria">TUM MA/IN Cafeteria</string>
-    <string name="tum_doener">TUM Dönerstand</string>
     <string name="lmu_mensa">Mensa Leopoldstraße</string>
-    <string name="lmu_cafeteria">LMU Cafeteria</string>
-    <string name="lmu_losteria">LMU L\'Osteria</string>
+    <string name="lmu_tijuana">Tijuana</string>
+    <string name="lmu_losteria">L\'Osteria</string>
 
     <!-- Benachrichtigungen -->
     <string name="notification_text">Hier könntest du Mittagessen gehen.</string>

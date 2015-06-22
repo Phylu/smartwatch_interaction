@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,6 +22,8 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.Objects;
+
+import de.tum.in.research.smartwatchinteraction.messaging.MessageThread;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -104,31 +107,22 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     }
 
-    public void createTwoButtonNotification(String locationName) {
+    public void createTwoButtonNotification(final String locationName) {
         if(mGoogleApiClient.isConnected()) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
-                    for(Node node : nodes.getNodes()) {
-                        Log.d("test", "Node set to: " + node.getDisplayName());
-                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "Lunch Checker Service", "Hello World".getBytes()).await();
-                        if(!result.getStatus().isSuccess()){
-                            Log.e("test", "error");
-                        } else {
-                            Log.i("test", "success!! sent to: " + node.getDisplayName());
-                        }
-                    }
-                }
-            }).start();
-
+            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.two_button_notification), locationName);
+            t.start();
         } else {
-            Log.e("test", "not connected");
+            Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();
         }
     }
 
     public void createSwipeNotification(String locationName) {
-        // TODO: send message to wear device
+        if(mGoogleApiClient.isConnected()) {
+            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.swipe_notification), locationName);
+            t.start();
+        } else {
+            Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

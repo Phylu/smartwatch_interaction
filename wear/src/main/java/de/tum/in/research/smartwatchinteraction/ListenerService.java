@@ -23,21 +23,40 @@ public class ListenerService extends WearableListenerService{
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Log.i("test", "onMessageReceived()");
-        if(messageEvent.getPath().equals("Lunch Checker Service")) {
-            Log.d("test", "Correct message");
-
-            final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            long[] pattern = { 0, 1 };
-            v.vibrate( pattern, -1 );
-
-            Intent notificationIntent = new Intent(this, SwipeNotificationActivity.class);
-            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            startActivity(notificationIntent);
-
+        String msg = new String(messageEvent.getData());
+        Log.i("test", "onMessageReceived(): " + msg);
+        if(messageEvent.getPath().equals(getResources().getString(R.string.swipe_notification))) {
+            vibrate();
+            startSwipeNotification(msg);
+        } else if (messageEvent.getPath().equals(getResources().getString(R.string.two_button_notification))) {
+            vibrate();
+            startTwoButtonNotification(msg);
         } else {
             super.onMessageReceived(messageEvent);
         }
     }
+
+    private void vibrate() {
+        final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = { 0, 100, 0, 100 };
+        v.vibrate(pattern, -1);
+    }
+
+    private void startSwipeNotification(String location) {
+        Intent notificationIntent = new Intent(this, SwipeNotificationActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        notificationIntent.putExtra("location", location);
+
+        startActivity(notificationIntent);
+    }
+
+    private void startTwoButtonNotification(String location) {
+        Log.d("DEBUG", "Invoking TwoButtonNotification with location: " + location);
+        Intent notificationIntent = new Intent(this, TwoButtonNotificationActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        notificationIntent.putExtra("location", location);
+
+        startActivity(notificationIntent);
+    }
+
 }
