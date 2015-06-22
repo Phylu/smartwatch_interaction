@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/lmu_mensa"
         android:id="@+id/button_create_notification_standard_tum_mensa"
-        android:tag="standard:lmu_mensa"
+        android:tag="two_button:lmu_mensa"
         android:layout_below="@+id/heading_standard_notification"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="@string/tum_cafeteria"
         android:id="@+id/button_create_notification_standard_tum_cafeteria"
-        android:tag="standard:tum_cafeteria"
+        android:tag="two_button:tum_cafeteria"
         android:layout_below="@+id/button_create_notification_standard_tum_mensa"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:text="@string/tum_doener"
         android:id="@+id/button_create_notification_standard_tum_doener"
-        android:tag="standard:tum_doener"
+        android:tag="two_button:tum_doener"
         android:layout_below="@+id/button_create_notification_standard_tum_cafeteria"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />

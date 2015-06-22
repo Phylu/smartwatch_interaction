@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Lunch Checker</string>
+    <string name="app_testing">Lunch Checker Testing</string>
     <string name="create_vpn">Start trial with new Participant</string>
     <string name="note_vpn_nr">Please write the Participant number %1$d on the questionaire</string>
     <string name="forward">Next</string>

@@ -6,46 +6,43 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.view.View;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
+
 import java.util.Objects;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
 
     int NOTIFICATION_ID = 1;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void createNotification(View view) {
         System.out.println("createNotification Invoked!");
@@ -56,6 +53,9 @@ public class MainActivity extends Activity {
 
         if (tagParts[0].equals("standard")) {
             createStandardNotification(tagParts[1]);
+        }
+        if (tagParts[0].equals("two_button")) {
+            createTwoButtonNotification(tagParts[1]);
         }
 
     }
@@ -105,11 +105,44 @@ public class MainActivity extends Activity {
     }
 
     public void createTwoButtonNotification(String locationName) {
-        // TODO: send message to wear device
+        if(mGoogleApiClient.isConnected()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
+                    for(Node node : nodes.getNodes()) {
+                        Log.d("test", "Node set to: " + node.getDisplayName());
+                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "Lunch Checker Service", "Hello World".getBytes()).await();
+                        if(!result.getStatus().isSuccess()){
+                            Log.e("test", "error");
+                        } else {
+                            Log.i("test", "success!! sent to: " + node.getDisplayName());
+                        }
+                    }
+                }
+            }).start();
+
+        } else {
+            Log.e("test", "not connected");
+        }
     }
 
     public void createSwipeNotification(String locationName) {
         // TODO: send message to wear device
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d("test", "onConnected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e("test", "Failed to connect to Google API Client");
+    }
 }
