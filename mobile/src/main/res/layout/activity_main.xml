@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/lmu_mensa"
         android:id="@+id/button_create_notification_standard_lmu_mensa"
-        android:tag="two_button:lmu_mensa"
+        android:tag="standard:lmu_mensa"
         android:layout_below="@+id/heading_standard_notification"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="@string/lmu_losteria"
         android:id="@+id/button_create_notification_standard_lmu_losteria"
-        android:tag="two_button:lmu_losteria"
+        android:tag="standard:lmu_losteria"
         android:layout_below="@+id/button_create_notification_standard_lmu_mensa"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />
@@ -35,8 +35,80 @@
         android:layout_height="wrap_content"
         android:text="@string/lmu_tijuana"
         android:id="@+id/button_create_notification_standard_lmu_tijuana"
-        android:tag="two_button:lmu_tijuana"
+        android:tag="standard:lmu_tijuana"
         android:layout_below="@+id/button_create_notification_standard_lmu_losteria"
+        android:layout_alignParentStart="true"
+        android:onClick="createNotification" />
+
+    <TextView android:text="@string/two_button_notification" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/button_create_notification_standard_lmu_tijuana"
+        android:id="@+id/heading_two_button_notification" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lmu_mensa"
+        android:id="@+id/button_create_notification_two_button_lmu_mensa"
+        android:tag="two_button:lmu_mensa"
+        android:layout_below="@+id/heading_two_button_notification"
+        android:layout_alignParentStart="true"
+        android:onClick="createNotification" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lmu_losteria"
+        android:id="@+id/button_create_notification_two_button_lmu_losteria"
+        android:tag="two_button:lmu_losteria"
+        android:layout_below="@+id/button_create_notification_two_button_lmu_mensa"
+        android:layout_alignParentStart="true"
+        android:onClick="createNotification" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lmu_tijuana"
+        android:id="@+id/button_create_notification_two_button_lmu_tijuana"
+        android:tag="two_button:lmu_tijuana"
+        android:layout_below="@+id/button_create_notification_two_button_lmu_losteria"
+        android:layout_alignParentStart="true"
+        android:onClick="createNotification" />
+
+    <TextView android:text="@string/swipe_notification" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/button_create_notification_two_button_lmu_tijuana"
+        android:id="@+id/heading_swipe_notification" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lmu_mensa"
+        android:id="@+id/button_create_notification_swipe_lmu_mensa"
+        android:tag="swipe:lmu_mensa"
+        android:layout_below="@+id/heading_swipe_notification"
+        android:layout_alignParentStart="true"
+        android:onClick="createNotification" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lmu_losteria"
+        android:id="@+id/button_create_notification_swipe_lmu_losteria"
+        android:tag="swipe:lmu_losteria"
+        android:layout_below="@+id/button_create_notification_swipe_lmu_mensa"
+        android:layout_alignParentStart="true"
+        android:onClick="createNotification" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lmu_tijuana"
+        android:id="@+id/button_create_notification_swipe_lmu_tijuana"
+        android:tag="swipe:lmu_tijuana"
+        android:layout_below="@+id/button_create_notification_swipe_lmu_losteria"
         android:layout_alignParentStart="true"
         android:onClick="createNotification" />
 

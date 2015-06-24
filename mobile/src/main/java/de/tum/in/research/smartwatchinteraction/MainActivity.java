@@ -60,6 +60,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         if (tagParts[0].equals("two_button")) {
             createTwoButtonNotification(tagParts[1]);
         }
+        if (tagParts[0].equals("swipe")) {
+            createSwipeNotification(tagParts[1]);
+        }
 
     }
 

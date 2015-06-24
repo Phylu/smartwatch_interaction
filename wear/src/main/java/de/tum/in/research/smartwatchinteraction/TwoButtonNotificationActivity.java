@@ -22,10 +22,11 @@ public class TwoButtonNotificationActivity extends Activity {
         setContentView(R.layout.activity_two_button_notification);
 
         // Switch on screen
+        // TODO: Verify whether screen stays on after closing application
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                //| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Intent i = getIntent();
         String location = i.getExtras().getString("location");
