@@ -1,27 +1,26 @@
 package de.tum.in.research.smartwatchinteraction;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.wearable.activity.ConfirmationActivity;
+import android.support.wearable.view.BoxInsetLayout;
 import android.support.wearable.view.DismissOverlayView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewOverlay;
-import android.widget.TextView;
 
 public class SwipeNotificationActivity extends Activity {
 
     private DismissOverlayView mDismissOverlay;
     private GestureDetector mDetector;
+    private SwipeView mSwipeView;
+    private BoxInsetLayout mViewLayout;
     private String DEBUG_TAG = "DEBUG: ";
 
     @Override
@@ -32,6 +31,10 @@ public class SwipeNotificationActivity extends Activity {
 
         // Obtain the DismissOverlayView element
         mDismissOverlay = (DismissOverlayView) findViewById(R.id.dismiss_overlay);
+
+        // Get the main Layout to draw the overlay upon
+        mViewLayout = (BoxInsetLayout) findViewById(R.id.swipe_view);
+        mSwipeView = new SwipeView(this);
 
         // Configure a gesture detector
         mDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -47,9 +50,9 @@ public class SwipeNotificationActivity extends Activity {
                                     float distanceY) {
                 // Check direction to draw correct color
                 if (e1.getX() - e2.getX() > 0) {
-                    createOverlay(getResources().getColor(R.color.green));
+                    createOverlay(getResources().getColor(R.color.green), e2.getX());
                 } else {
-                    createOverlay(getResources().getColor(R.color.red));
+                    createOverlay(getResources().getColor(R.color.red), e2.getX());
                 }
 
                 return true;
@@ -98,17 +101,49 @@ public class SwipeNotificationActivity extends Activity {
         this.finish();
     }
 
-    private void createOverlay(int color) {
+    private void createOverlay(int color, float x) {
         Log.d("DEBUG", "Creating overlay");
-        View view = findViewById(R.id.swipe_overlay);
-        view.setBackgroundColor(color);
-        view.setAlpha(0.3f);
+//        View view = findViewById(R.id.swipe_overlay);
+//        view.setBackgroundColor(color);
+//        view.setAlpha(0.3f);
+
+        mSwipeView.update(color, (int) x);
+        mViewLayout.removeView(mSwipeView);
+        mViewLayout.addView(mSwipeView);
+
     }
 
     private void removeOverlay() {
         Log.d("DEBUG", "Removing overlay");
-        View view = findViewById(R.id.swipe_overlay);
-        view.setAlpha(0.0f);
+        mViewLayout.removeView(mSwipeView);
+//        View view = findViewById(R.id.swipe_overlay);
+//        view.setAlpha(0.0f);
+    }
+
+    public class SwipeView extends View {
+        private ShapeDrawable mDrawable;
+
+        public SwipeView(Context context) {
+            super(context);
+            setAlpha(0.5f);
+        }
+
+         public void update(int color, int x) {
+
+             int y = 0;
+             int width = 320;
+             int height = 320;
+
+             mDrawable = new ShapeDrawable(new OvalShape());
+             mDrawable.getPaint().setColor(color);
+             mDrawable.setBounds(x, y, x + width, y + height);
+
+             invalidate();
+        }
+
+        protected void onDraw(Canvas canvas) {
+            mDrawable.draw(canvas);
+        }
     }
 
 }
