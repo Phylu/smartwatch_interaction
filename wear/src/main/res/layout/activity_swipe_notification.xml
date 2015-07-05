@@ -4,7 +4,7 @@
     android:background="@drawable/lmu_mensa"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:id="@+id/swipe_view">
+    android:id="@+id/swipe_background">
     <android.support.wearable.view.CardScrollView
         android:id="@+id/card_scroll_view"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
                     android:fontFamily="sans-serif-light"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:text="@string/lmu_mensa"
+                    android:id="@+id/swipe_text"
                     android:textColor="@color/secondary_text_light"
                     android:textSize="16sp"/>
                 <TextView

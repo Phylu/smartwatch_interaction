@@ -24,20 +24,12 @@
             android:label="@string/two_button_notification"
             android:exported="true"
             android:allowEmbedded="true">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
             </activity>
         <activity android:name=".SwipeNotificationActivity"
             android:label="@string/swipe_notification"
             android:exported="true"
             android:allowEmbedded="true"
             android:theme="@style/Swiping">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="android.support.wearable.activity.ConfirmationActivity" />
         <service android:name=".ListenerService">
