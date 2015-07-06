@@ -42,6 +42,10 @@ public class ListenerService extends WearableListenerService{
         v.vibrate(pattern, -1);
     }
 
+    private void startActionButtonNotification(String location) {
+
+    }
+
     private void startSwipeNotification(String location) {
         Intent notificationIntent = new Intent(this, SwipeNotificationActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

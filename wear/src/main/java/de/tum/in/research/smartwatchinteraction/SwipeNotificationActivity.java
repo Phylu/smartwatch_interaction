@@ -1,25 +1,17 @@
 package de.tum.in.research.smartwatchinteraction;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
-import android.support.wearable.activity.ConfirmationActivity;
 import android.support.wearable.view.BoxInsetLayout;
 import android.support.wearable.view.DismissOverlayView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
-public class SwipeNotificationActivity extends Activity {
+public class SwipeNotificationActivity extends VotingActivity {
 
     private static short UP = 1;
     private static short DOWN = 0;
@@ -45,11 +37,7 @@ public class SwipeNotificationActivity extends Activity {
         mViewLayout = (BoxInsetLayout) findViewById(R.id.swipe_background);
         mSwipeView = new SwipeView(this);
 
-        // Switch on screen
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        //| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        switchOnScreen();
 
         Intent i = getIntent();
         String location = i.getExtras().getString("location");
@@ -57,7 +45,7 @@ public class SwipeNotificationActivity extends Activity {
         Log.d("DEBUG", "Location in intent:" + location);
 
         // Get text and image from the identifier
-        String text = getResources().getString(getResources().getIdentifier(location, "string", getPackageName()));
+        String text = getLocationName(location);
         Drawable background = getLocationImage(text);
 
         View view = findViewById(R.id.swipe_background);
@@ -93,51 +81,18 @@ public class SwipeNotificationActivity extends Activity {
 
     }
 
-    /**
-     * Get the image from the location identifier
-     * @param location
-     * @return
-     */
-    private Drawable getLocationImage(String location) {
-        if (location.equals(getResources().getString(R.string.lmu_mensa))) {
-            return getResources().getDrawable(R.drawable.lmu_mensa, null);
-        } else if (location.equals(getResources().getString(R.string.lmu_losteria))) {
-            return getResources().getDrawable(R.drawable.lmu_losteria, null);
-        } else if (location.equals(getResources().getString(R.string.lmu_tijuana))) {
-            return getResources().getDrawable(R.drawable.lmu_tijuana, null);
-        }
-        return null;
-    }
-
     // Capture long presses to exit the activity
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             removeOverlay();
             if (lastDirection == SwipeNotificationActivity.UP && lastX < 160) {
-                voteUp();
+                voteUp(mSwipeView);
             } else if (lastDirection == SwipeNotificationActivity.DOWN && lastX > 160) {
-                voteDown();
+                voteDown(mSwipeView);
             }
         }
         return mDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
-    }
-
-
-    public void voteUp() {
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-                ConfirmationActivity.SUCCESS_ANIMATION);
-        startActivity(intent);
-        this.finish();
-    }
-
-    public void voteDown() {
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-                ConfirmationActivity.SUCCESS_ANIMATION);
-        startActivity(intent);
-        this.finish();
     }
 
     private void createOverlay(int color, float x) {
@@ -151,35 +106,6 @@ public class SwipeNotificationActivity extends Activity {
     private void removeOverlay() {
         Log.d("DEBUG", "Removing overlay");
         mViewLayout.removeView(mSwipeView);
-    }
-
-    /**
-     * View to be drawn while swiping
-     */
-    public class SwipeView extends View {
-        private ShapeDrawable mDrawable;
-
-        public SwipeView(Context context) {
-            super(context);
-            setAlpha(0.5f);
-        }
-
-         public void update(int color, int x) {
-
-             int y = 0;
-             int width = 320;
-             int height = 320;
-
-             mDrawable = new ShapeDrawable(new OvalShape());
-             mDrawable.getPaint().setColor(color);
-             mDrawable.setBounds(x, y, x + width, y + height);
-
-             invalidate();
-        }
-
-        protected void onDraw(Canvas canvas) {
-            mDrawable.draw(canvas);
-        }
     }
 
 }
