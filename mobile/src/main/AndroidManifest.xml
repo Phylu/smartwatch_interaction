@@ -26,7 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActionButtonActivity"></activity>
+        <activity android:name=".TrialActivities.ActionButtonActivity"></activity>
+        <activity android:name=".TrialActivities.TwoButtonActivity"></activity>
+        <activity android:name=".TrialActivities.SwipeActivity"></activity>
         <activity android:name=".NullActivity" />
     </application>
 

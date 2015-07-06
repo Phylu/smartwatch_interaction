@@ -28,7 +28,7 @@ public abstract class VotingActivity extends Activity {
      * @param location
      * @return
      */
-    protected Drawable getLocationImage(String location) {
+    public Drawable getLocationImage(String location) {
         if (location.equals(getResources().getString(R.string.lmu_mensa))) {
             return getResources().getDrawable(R.drawable.lmu_mensa, null);
         } else if (location.equals(getResources().getString(R.string.lmu_losteria))) {
