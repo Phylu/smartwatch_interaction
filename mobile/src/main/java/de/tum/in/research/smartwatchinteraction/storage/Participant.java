@@ -10,7 +10,9 @@ import de.tum.in.research.smartwatchinteraction.TrialActivities.ActionButtonActi
 /**
  * Created by janosch on 15.06.15.
  */
-public class Participant implements Serializable {
+public class Participant {
+
+    private static Participant singleton;
 
     int vpn_nr;
     int group;
@@ -19,12 +21,26 @@ public class Participant implements Serializable {
     Trial[] two_button = new Trial[3];
     Trial[] action_button = new Trial[3];
 
+    private Participant() {
+    }
+
+    /**
+     * Get singleton instance
+     * @return participant
+     */
+    public static Participant getInstance() {
+        if (singleton == null) {
+            singleton = new Participant();
+        }
+        return singleton;
+    }
+
     /**
      * Create new participant object
      * @param vpn_nr    Participant number
      * @param group     Group of participant
      */
-    public Participant(int vpn_nr, int group) {
+    public void newParticipant(int vpn_nr, int group) {
         this.vpn_nr = vpn_nr;
         this.group = group;
         setOrder(group);
@@ -53,28 +69,38 @@ public class Participant implements Serializable {
     /**
      * Add a new Swipe Voting element
      */
-    public void addSwipe(int number, int timer, short vote) {
-        swipe[number] = new Trial(timer, vote);
+    public void addSwipe(int timer, int vote) {
+        for (int i = 0; i < 3; i++) {
+            if (swipe[i] == null) {
+                swipe[i] = new Trial(timer, vote);
+            }
+        }
     }
 
     /**
      * Add a new TwoButton Voting element
-     * @param number
      * @param timer
      * @param vote
      */
-    public void addTwoButton(int number, int timer, short vote) {
-        two_button[number] = new Trial(timer, vote);
+    public void addTwoButton(int timer, int vote) {
+        for (int i = 0; i < 3; i++) {
+            if (two_button[i] == null) {
+                two_button[i] = new Trial(timer, vote);
+            }
+        }
     }
 
     /**
      * Add a new AcitonButton Voting element
-     * @param number
      * @param timer
      * @param vote
      */
-    public void addActionButton(int number, int timer, short vote) {
-        action_button[number] = new Trial(timer, vote);
+    public void addActionButton(int timer, int vote) {
+        for (int i = 0; i < 3; i++) {
+            if (action_button[i] == null) {
+                action_button[i] = new Trial(timer, vote);
+            }
+        }
     }
 
     /**

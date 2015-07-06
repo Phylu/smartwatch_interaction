@@ -6,9 +6,9 @@ package de.tum.in.research.smartwatchinteraction.storage;
 public class Trial {
 
     int timer;
-    short vote;
+    int vote;
 
-    public Trial(int timer, short vote) {
+    public Trial(int timer, int vote) {
         this.timer = timer;
         this.vote = vote;
     }
@@ -17,7 +17,7 @@ public class Trial {
         return this.timer;
     }
 
-    public short getVote() {
+    public int getVote() {
         return this.vote;
     }
 

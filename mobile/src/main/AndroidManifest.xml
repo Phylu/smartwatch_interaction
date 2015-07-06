@@ -30,6 +30,11 @@
         <activity android:name=".TrialActivities.TwoButtonActivity"></activity>
         <activity android:name=".TrialActivities.SwipeActivity"></activity>
         <activity android:name=".NullActivity" />
+        <service android:name=".messaging.ListenerService">
+        <intent-filter>
+            <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+        </intent-filter>
+        </service>
     </application>
 
 </manifest>

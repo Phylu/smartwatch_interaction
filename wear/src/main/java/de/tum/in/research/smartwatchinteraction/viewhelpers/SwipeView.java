@@ -1,4 +1,4 @@
-package de.tum.in.research.smartwatchinteraction;
+package de.tum.in.research.smartwatchinteraction.viewhelpers;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -1,4 +1,4 @@
-package de.tum.in.research.smartwatchinteraction;
+package de.tum.in.research.smartwatchinteraction.votingactivities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import de.tum.in.research.smartwatchinteraction.R;
 
 public class TwoButtonNotificationActivity extends VotingActivity {
 

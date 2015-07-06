@@ -35,9 +35,8 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the current patricipant
-        Intent intent = getIntent();
-        participant = (Participant) intent.getExtras().getSerializable("participant");
+        // Get the current participant
+        participant = Participant.getInstance();
 
         // Get settings
         settings = getSharedPreferences(PREFS_NAME, 0);
@@ -110,6 +109,7 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         for (int i = 0; i < 3; i++) {
             // If this is the last view, go to StartActivity
             if (i == 2) {
+                // TODO: Write Participant to log file
                 intent = new Intent(this, StartActivity.class);
                 startActivity(intent);
                 break;
@@ -117,7 +117,6 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
             // Check which TrialActivity we are in and procceed with the next
             if (this.getClass().equals(participant.order[i])) {
                 intent = new Intent(this, participant.order[i+1]);
-                intent.putExtra("participant", participant);
                 startActivity(intent);
                 break;
             }

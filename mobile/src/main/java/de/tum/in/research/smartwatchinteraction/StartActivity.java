@@ -57,7 +57,8 @@ public class StartActivity extends Activity {
         int group_nr = createRandomGroupNumber();
 
         // Create Storage element
-        participant = new Participant(vpn_nr, group_nr);
+        participant = Participant.getInstance();
+        participant.newParticipant(vpn_nr, group_nr);
         Log.d("DEBUG: ", participant.toString());
 
         // Let the user procceed
@@ -138,7 +139,6 @@ public class StartActivity extends Activity {
      */
     public void forwardButtonClick(View view) {
         Intent intent = new Intent(this, participant.order[0]);
-        intent.putExtra("participant", participant);
         startActivity(intent);
         finish();
     }

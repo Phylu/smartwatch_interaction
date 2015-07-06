@@ -1,25 +1,21 @@
-package de.tum.in.research.smartwatchinteraction;
+package de.tum.in.research.smartwatchinteraction.messaging;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.IBinder;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
+import de.tum.in.research.smartwatchinteraction.R;
+import de.tum.in.research.smartwatchinteraction.votingactivities.SwipeNotificationActivity;
+import de.tum.in.research.smartwatchinteraction.votingactivities.TwoButtonNotificationActivity;
+
 /**
  * Created by janosch on 22.06.15.
  */
-public class ListenerService extends WearableListenerService{
+public class ListenerService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {

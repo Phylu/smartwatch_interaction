@@ -20,19 +20,19 @@
             </intent-filter>
         </activity>
 -->
-        <activity android:name=".TwoButtonNotificationActivity"
+        <activity android:name=".votingactivities.TwoButtonNotificationActivity"
             android:label="@string/two_button_notification"
             android:exported="true"
             android:allowEmbedded="true">
             </activity>
-        <activity android:name=".SwipeNotificationActivity"
+        <activity android:name=".votingactivities.SwipeNotificationActivity"
             android:label="@string/swipe_notification"
             android:exported="true"
             android:allowEmbedded="true"
             android:theme="@style/Swiping">
         </activity>
         <activity android:name="android.support.wearable.activity.ConfirmationActivity" />
-        <service android:name=".ListenerService">
+        <service android:name=".messaging.ListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>

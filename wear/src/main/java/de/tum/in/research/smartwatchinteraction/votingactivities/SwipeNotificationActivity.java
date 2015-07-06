@@ -1,4 +1,4 @@
-package de.tum.in.research.smartwatchinteraction;
+package de.tum.in.research.smartwatchinteraction.votingactivities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -10,6 +10,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import de.tum.in.research.smartwatchinteraction.R;
+import de.tum.in.research.smartwatchinteraction.viewhelpers.SwipeView;
 
 public class SwipeNotificationActivity extends VotingActivity {
 
