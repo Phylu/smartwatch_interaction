@@ -49,7 +49,7 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         headingTextView = (TextView) findViewById(R.id.heading_notification);
 
         // Load locations order string
-        locations = new String[] {getString(R.string.lmu_mensa), getString(R.string.lmu_losteria), getString(R.string.lmu_tijuana)};
+        locations = new String[] {"lmu_mensa", "lmu_losteria", "lmu_tijuana"};
 
         // Create wearable connection
         mGoogleApiClient = new GoogleApiClient.Builder(this)
