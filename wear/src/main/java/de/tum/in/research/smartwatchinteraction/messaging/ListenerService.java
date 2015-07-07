@@ -5,12 +5,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.wearable.activity.ConfirmationActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -23,7 +30,7 @@ import de.tum.in.research.smartwatchinteraction.votingactivities.VotingHelper;
 /**
  * Created by janosch on 22.06.15.
  */
-public class ListenerService extends WearableListenerService {
+public class ListenerService extends WearableListenerService  {
 
     private int NOTIFICATION_ID = 1;
 
@@ -44,6 +51,7 @@ public class ListenerService extends WearableListenerService {
             super.onMessageReceived(messageEvent);
         }
     }
+
 
     private void vibrate() {
         final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -66,7 +74,7 @@ public class ListenerService extends WearableListenerService {
         Intent actionVoteDownIntent = new Intent(this, ActionButtonNotificationActivity.class); // Switch to Vote Activity
         actionVoteUpIntent.putExtra("vote", "1");
         PendingIntent actionVoteDownPendingIntent =
-                PendingIntent.getActivity(this, 0, actionVoteUpIntent, 0);
+                PendingIntent.getActivity(this, 0, actionVoteDownIntent, 0);
 
         // Create the action
         NotificationCompat.Action actionVoteUp =
@@ -89,7 +97,9 @@ public class ListenerService extends WearableListenerService {
                         .extend(new NotificationCompat.WearableExtender()
                                         .addAction(actionVoteUp)
                                         .addAction(actionVoteDown)
-                                        .setBackground(backgroundImage)
+                                        .setBackground(BitmapFactory.decodeResource(
+                                                getResources(), R.drawable.lmu_losteria
+                                        ))
                         );
 
         // Get an instance of the NotificationManager service

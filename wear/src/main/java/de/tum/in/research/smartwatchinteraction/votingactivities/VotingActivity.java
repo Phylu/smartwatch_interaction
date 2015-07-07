@@ -1,6 +1,7 @@
 package de.tum.in.research.smartwatchinteraction.votingactivities;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,30 +17,19 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Wearable;
 
 import de.tum.in.research.smartwatchinteraction.R;
+import de.tum.in.research.smartwatchinteraction.messaging.ListenerService;
 import de.tum.in.research.smartwatchinteraction.messaging.MessageThread;
+import de.tum.in.research.smartwatchinteraction.messaging.SenderService;
 
 /**
  * Created by janosch on 06.07.15.
  * Abstract class to provide some voting functionality
  */
-public abstract class VotingActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
-
-
-    // Messaging Service
-    protected GoogleApiClient mGoogleApiClient;
+public abstract class VotingActivity extends Activity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Create wearable connection
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-        mGoogleApiClient.connect();
     }
 
     /**
@@ -56,17 +46,10 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
      * @param view
      */
     public void voteUp(View view) {
-        if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getClassIdentifier(), "1");
-            t.start();
-        } else {
-            Toast.makeText(this, "Phone not connected", Toast.LENGTH_LONG).show();
-        }
-        // TODO: Get voting information and send msg to phone
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-                ConfirmationActivity.SUCCESS_ANIMATION);
-        startActivity(intent);
+        Intent intent = new Intent(this, SenderService.class);
+        intent.putExtra("class", getClassIdentifier());
+        intent.putExtra("vote", "1");
+        startService(intent);
         this.finish();
     }
 
@@ -75,17 +58,10 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
      * @param view
      */
     public void voteDown(View view) {
-        if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getClassIdentifier(), "-1");
-            t.start();
-        } else {
-            Toast.makeText(this, "Phone not connected", Toast.LENGTH_LONG).show();
-        }
-        // TODO: Get voting information and send msg to phone
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-                ConfirmationActivity.SUCCESS_ANIMATION);
-        startActivity(intent);
+        Intent intent = new Intent(this, SenderService.class);
+        intent.putExtra("class", getClassIdentifier());
+        intent.putExtra("vote", "-1");
+        startService(intent);
         this.finish();
     }
 
@@ -102,22 +78,6 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
             return getResources().getString(R.string.swipe_notification);
         }
         return "";
-    }
-
-    // These three methods are needed for the messaging connection to the wear device
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.d("test", "onConnected");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e("test", "Failed to connect to Google API Client");
     }
 
 }
