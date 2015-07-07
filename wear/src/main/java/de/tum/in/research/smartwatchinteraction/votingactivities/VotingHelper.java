@@ -30,15 +30,11 @@ public class VotingHelper {
     }
 
     public static Bitmap getLocationBitmap(Context context, String location) {
-        Log.d("VotingHelper", location);
         if (location.equals(context.getResources().getString(R.string.lmu_mensa))) {
-            Log.d("VotingHelper", "Mensa");
             return BitmapFactory.decodeResource(context.getResources(), R.drawable.lmu_mensa);
         } else if (location.equals(context.getResources().getString(R.string.lmu_losteria))) {
-            Log.d("VotingHelper", "L'Osteria");
             return BitmapFactory.decodeResource(context.getResources(), R.drawable.lmu_losteria);
         } else if (location.equals(context.getResources().getString(R.string.lmu_tijuana))) {
-            Log.d("VotingHelper", "Tijuana");
             return BitmapFactory.decodeResource(context.getResources(), R.drawable.lmu_tijuana);
         }
         return null;
