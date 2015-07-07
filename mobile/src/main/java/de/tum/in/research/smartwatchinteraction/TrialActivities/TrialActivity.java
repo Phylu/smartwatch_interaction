@@ -16,7 +16,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Wearable;
 
 import de.tum.in.research.smartwatchinteraction.R;
-import de.tum.in.research.smartwatchinteraction.StartActivity;
+import de.tum.in.research.smartwatchinteraction.MainActivity;
 import de.tum.in.research.smartwatchinteraction.storage.Participant;
 
 public abstract class TrialActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
@@ -108,7 +108,7 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
             // If this is the last view, go to StartActivity
             if (i == 2) {
                 participant.store(getApplicationContext());
-                intent = new Intent(this, StartActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
