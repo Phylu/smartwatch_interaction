@@ -29,7 +29,7 @@ public class ListenerService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         String msg = new String(messageEvent.getData());
-        Log.i("test", "onMessageReceived(): " + messageEvent.getPath() + "/" + msg);
+        Log.d("DEBUG", "onMessageReceived(): " + messageEvent.getPath() + "/" + msg);
         if(messageEvent.getPath().equals(getResources().getString(R.string.swipe_notification))) {
             Toast.makeText(getApplicationContext(), getString(R.string.response_received_swipe), Toast.LENGTH_SHORT).show();
             participant.addSwipe(Integer.valueOf(msg));

@@ -1,10 +1,17 @@
 package de.tum.in.research.smartwatchinteraction.storage;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import de.tum.in.research.smartwatchinteraction.R;
 import de.tum.in.research.smartwatchinteraction.TrialActivities.ActionButtonActivity;
 import de.tum.in.research.smartwatchinteraction.TrialActivities.SwipeActivity;
 import de.tum.in.research.smartwatchinteraction.TrialActivities.TrialActivity;
@@ -20,9 +27,9 @@ public class Participant {
     int vpn_nr;
     int group;
     public Class<TrialActivity>[] order;
-    Trial[] swipe = new Trial[3];
-    Trial[] two_button = new Trial[3];
-    Trial[] action_button = new Trial[3];
+    Trial[] swipe;
+    Trial[] two_button;
+    Trial[] action_button;
     long counterStart;
 
     private Participant() {
@@ -48,6 +55,11 @@ public class Participant {
         this.vpn_nr = vpn_nr;
         this.group = group;
         setOrder(group);
+
+        // Reset information
+        swipe = new Trial[3];
+        two_button = new Trial[3];
+        action_button = new Trial[3];
     }
 
     /**
@@ -143,10 +155,88 @@ public class Participant {
     /**
      * Store the participant object on disk
      */
-    public void store() {
+    public void store(Context context) {
         Log.d("DEBUG: ", this.toString());
-        // TODO: implement
+
+        File file = new File(context.getExternalFilesDir(null), "smartwatch_interaction_output.csv");
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file, true);
+            writeVpnInformation(outputStream);
+            writeActionButtonInformation(outputStream);
+            writeTwoButtonInformation(outputStream);
+            writeSwipeInformation(outputStream);
+            outputStream.write("\n".getBytes());
+            outputStream.close();
+        } catch (java.io.IOException e) {
+            Toast.makeText(context.getApplicationContext(), context.getString(R.string.error_cannot_write_output), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Write general vpn information
+     * @param outputStream
+     * @throws IOException
+     */
+    private void writeVpnInformation(FileOutputStream outputStream) throws IOException {
+        outputStream.write(String.valueOf(vpn_nr).getBytes());
+        outputStream.write(";".getBytes());
+        outputStream.write(String.valueOf(group).getBytes());
+        outputStream.write(";".getBytes());
+    }
+
+    /**
+     * Write information about action button trials
+     * @param outputStream
+     * @throws IOException
+     */
+    private void writeActionButtonInformation(FileOutputStream outputStream) throws IOException {
+        for (int i = 0; i < 3; i++) {
+            if (action_button[i] != null) {
+                outputStream.write(String.valueOf(action_button[i].getVote()).getBytes());
+            }
+            outputStream.write(";".getBytes());
+            if (action_button[i] != null) {
+                outputStream.write(String.valueOf(action_button[i].getTimer()).getBytes());
+            }
+            outputStream.write(";".getBytes());
+        }
+    }
+
+    /**
+     * Write information about two button trials
+     * @param outputStream
+     * @throws IOException
+     */
+    private void writeTwoButtonInformation(FileOutputStream outputStream) throws IOException {
+        for (int i = 0; i < 3; i++) {
+            if (two_button[i] != null) {
+                outputStream.write(String.valueOf(two_button[i].getVote()).getBytes());
+            }
+            outputStream.write(";".getBytes());
+            if (two_button[i] != null) {
+                outputStream.write(String.valueOf(two_button[i].getTimer()).getBytes());
+            }
+            outputStream.write(";".getBytes());
+        }
+    }
+
+    /**
+     * Write information about swipe trials
+     * @param outputStream
+     * @throws IOException
+     */
+    private void writeSwipeInformation(FileOutputStream outputStream) throws IOException {
+        for (int i = 0; i < 3; i++) {
+            if (swipe[i] != null) {
+                outputStream.write(String.valueOf(swipe[i].getVote()).getBytes());
+            }
+            outputStream.write(";".getBytes());
+            if (swipe[i] != null) {
+                outputStream.write(String.valueOf(swipe[i].getTimer()).getBytes());
+            }
+            outputStream.write(";".getBytes());
+        }
+    }
 
 }

@@ -92,8 +92,6 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
      */
     public boolean createNotification(View view) {
         if (counter >= 3) {
-            CharSequence text = "Hello toast!";
-
             Toast.makeText(getApplicationContext(), getString(R.string.error_three_notifications_send), Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -109,7 +107,7 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         for (int i = 0; i < 3; i++) {
             // If this is the last view, go to StartActivity
             if (i == 2) {
-                participant.store();
+                participant.store(getApplicationContext());
                 intent = new Intent(this, StartActivity.class);
                 startActivity(intent);
                 break;
