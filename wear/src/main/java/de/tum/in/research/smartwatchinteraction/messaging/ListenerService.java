@@ -37,7 +37,7 @@ public class ListenerService extends WearableListenerService  {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         String msg = new String(messageEvent.getData());
-        Log.i("test", "onMessageReceived(): " + msg);
+        Log.d("ListenerService", "onMessageReceived(): " + messageEvent.getPath() + "/" + msg);
         if(messageEvent.getPath().equals(getResources().getString(R.string.swipe_notification))) {
             vibrate();
             startSwipeNotification(msg);
@@ -61,8 +61,8 @@ public class ListenerService extends WearableListenerService  {
 
     private void startActionButtonNotification(String location) {
 
-        CharSequence title = VotingHelper.getLocationName(this, location);
-        Bitmap backgroundImage = VotingHelper.getLocationBitmap(this, location);
+        String title = VotingHelper.getLocationName(this, location);
+        Bitmap backgroundImage = VotingHelper.getLocationBitmap(this, title);
 
         // Create an intent for the vote_up action
         Intent actionVoteUpIntent = new Intent(this, ActionButtonNotificationActivity.class); // Switch to Vote Activity
@@ -97,9 +97,7 @@ public class ListenerService extends WearableListenerService  {
                         .extend(new NotificationCompat.WearableExtender()
                                         .addAction(actionVoteUp)
                                         .addAction(actionVoteDown)
-                                        .setBackground(BitmapFactory.decodeResource(
-                                                getResources(), R.drawable.lmu_losteria
-                                        ))
+                                        .setBackground(backgroundImage)
                         );
 
         // Get an instance of the NotificationManager service

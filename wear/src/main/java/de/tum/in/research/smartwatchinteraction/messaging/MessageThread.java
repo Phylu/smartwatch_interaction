@@ -1,5 +1,6 @@
 package de.tum.in.research.smartwatchinteraction.messaging;
 
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,6 +30,7 @@ public class MessageThread extends Thread {
             Log.d("DEBUG", "Sending to: " + node.getDisplayName());
             Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), method, voting.getBytes()).await();
         }
+        Looper.myLooper().quit();
     }
 
 }

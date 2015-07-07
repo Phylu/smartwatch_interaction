@@ -3,7 +3,9 @@ package de.tum.in.research.smartwatchinteraction.messaging;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.wearable.activity.ConfirmationActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,17 +28,23 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
 
     @Override
     public void onCreate() {
+        super.onCreate();
         // Create wearable connection
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
         mGoogleApiClient.connect();
+
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Looper.prepare();
+
+        Log.d("SenderService", "Started");
         Bundle extras = intent.getExtras();
         String mClass = extras.getString("class");
         int vote = Integer.valueOf(extras.getString("vote"));
@@ -45,6 +53,8 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
         } else if (vote == -1) {
             voteDown(mClass);
         }
+
+        Looper.loop();
     }
 
     /**
@@ -60,6 +70,7 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
         }
         // TODO: Get voting information and send msg to phone
         Intent intent = new Intent(this, ConfirmationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
                 ConfirmationActivity.SUCCESS_ANIMATION);
         startActivity(intent);
@@ -78,6 +89,7 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
         }
         // TODO: Get voting information and send msg to phone
         Intent intent = new Intent(this, ConfirmationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
                 ConfirmationActivity.SUCCESS_ANIMATION);
         startActivity(intent);
