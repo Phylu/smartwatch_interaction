@@ -52,31 +52,6 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
     }
 
     /**
-     * Get the image from the location identifier
-     * @param location
-     * @return
-     */
-    public Drawable getLocationImage(String location) {
-        if (location.equals(getResources().getString(R.string.lmu_mensa))) {
-            return getResources().getDrawable(R.drawable.lmu_mensa, null);
-        } else if (location.equals(getResources().getString(R.string.lmu_losteria))) {
-            return getResources().getDrawable(R.drawable.lmu_losteria, null);
-        } else if (location.equals(getResources().getString(R.string.lmu_tijuana))) {
-            return getResources().getDrawable(R.drawable.lmu_tijuana, null);
-        }
-        return null;
-    }
-
-    /**
-     * Get the name from the location identifier
-     * @param location
-     * @return
-     */
-    protected String getLocationName(String location) {
-        return getResources().getString(getResources().getIdentifier(location, "string", getPackageName()));
-    }
-
-    /**
      * Vote something up
      * @param view
      */
@@ -119,9 +94,9 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
      * @return
      */
     private String getClassIdentifier() {
-        /*if (this.getClass() == ActionButonNotificationActivity.class) {
+        if (this.getClass() == ActionButtonNotificationActivity.class) {
             return getResources().getString(R.string.action_button_notification);
-        } else*/ if (this.getClass() == TwoButtonNotificationActivity.class) {
+        } else if (this.getClass() == TwoButtonNotificationActivity.class) {
             return getResources().getString(R.string.two_button_notification);
         } else if (this.getClass() == SwipeNotificationActivity.class) {
             return getResources().getString(R.string.swipe_notification);

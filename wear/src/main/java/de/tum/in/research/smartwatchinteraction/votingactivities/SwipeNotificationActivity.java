@@ -23,7 +23,6 @@ public class SwipeNotificationActivity extends VotingActivity {
     private GestureDetector mDetector;
     private SwipeView mSwipeView;
     private BoxInsetLayout mViewLayout;
-    private String DEBUG_TAG = "DEBUG: ";
     private float lastX;
     private short lastDirection;
 
@@ -48,8 +47,8 @@ public class SwipeNotificationActivity extends VotingActivity {
         Log.d("DEBUG", "Location in intent:" + location);
 
         // Get text and image from the identifier
-        String text = getLocationName(location);
-        Drawable background = getLocationImage(text);
+        String text = VotingHelper.getLocationName(this, location);
+        Drawable background = VotingHelper.getLocationImage(this, text);
 
         View view = findViewById(R.id.swipe_background);
         view.setBackground(background);

@@ -26,8 +26,8 @@ public class TwoButtonNotificationActivity extends VotingActivity {
         Log.d("DEBUG", "Location in intent:" + location);
 
         // Get text and image from the identifier
-        String text = getLocationName(location);
-        Drawable background = getLocationImage(text);
+        String text = VotingHelper.getLocationName(this, location);
+        Drawable background = VotingHelper.getLocationImage(this, text);
 
         View view = findViewById(R.id.two_button_background);
         view.setBackground(background);

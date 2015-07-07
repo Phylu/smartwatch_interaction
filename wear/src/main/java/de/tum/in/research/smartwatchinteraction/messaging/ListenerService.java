@@ -1,21 +1,33 @@
 package de.tum.in.research.smartwatchinteraction.messaging;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
 import de.tum.in.research.smartwatchinteraction.R;
+import de.tum.in.research.smartwatchinteraction.votingactivities.ActionButtonNotificationActivity;
 import de.tum.in.research.smartwatchinteraction.votingactivities.SwipeNotificationActivity;
 import de.tum.in.research.smartwatchinteraction.votingactivities.TwoButtonNotificationActivity;
+import de.tum.in.research.smartwatchinteraction.votingactivities.VotingHelper;
 
 /**
  * Created by janosch on 22.06.15.
  */
 public class ListenerService extends WearableListenerService {
+
+    private int NOTIFICATION_ID = 1;
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
@@ -39,6 +51,53 @@ public class ListenerService extends WearableListenerService {
     }
 
     private void startActionButtonNotification(String location) {
+
+        CharSequence title = VotingHelper.getLocationName(this, location);
+        BitmapDrawable backgroundImage = (BitmapDrawable) VotingHelper.getLocationImage(this, location);
+
+        // Create an intent for the vote_up action
+        Intent actionVoteUpIntent = new Intent(this, ActionButtonNotificationActivity.class); // Switch to Vote Activity
+        actionVoteUpIntent.putExtra("vote", "1");
+        PendingIntent actionVoteUpPendingIntent =
+                PendingIntent.getActivity(this, 0, actionVoteUpIntent, 0);
+
+        // Create an intent for the vote_up action
+        Intent actionVoteDownIntent = new Intent(this, ActionButtonNotificationActivity.class); // Switch to Vote Activity
+        actionVoteUpIntent.putExtra("vote", "1");
+        PendingIntent actionVoteDownPendingIntent =
+                PendingIntent.getActivity(this, 0, actionVoteUpIntent, 0);
+
+        // Create the action
+        NotificationCompat.Action actionVoteUp =
+                new NotificationCompat.Action.Builder(R.drawable.thumb_up_white,
+                        getString(R.string.vote_up), actionVoteUpPendingIntent)
+                        .build();
+        NotificationCompat.Action actionVoteDown =
+                new NotificationCompat.Action.Builder(R.drawable.thumb_down_white,
+                        getString(R.string.vote_down), actionVoteDownPendingIntent)
+                        .build();
+
+        // Build Main Notification
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(title)
+                        .setContentText(getString(R.string.notification_text))
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true)
+                        .extend(new NotificationCompat.WearableExtender()
+                                        .addAction(actionVoteUp)
+                                        .addAction(actionVoteDown)
+                                        .setBackground(backgroundImage.getBitmap())
+                        );
+
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+                NotificationManagerCompat.from(this);
+
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+
 
     }
 

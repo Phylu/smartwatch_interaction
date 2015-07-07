@@ -36,6 +36,9 @@ public class ListenerService extends WearableListenerService {
         } else if (messageEvent.getPath().equals(getResources().getString(R.string.two_button_notification))) {
             Toast.makeText(getApplicationContext(), getString(R.string.response_received_two_button), Toast.LENGTH_SHORT).show();
             participant.addTwoButton(Integer.valueOf(msg));
+        } else if (messageEvent.getPath().equals(getResources().getString(R.string.action_button_notification))) {
+            Toast.makeText(getApplicationContext(), getString(R.string.action_button_notification), Toast.LENGTH_SHORT).show();
+            participant.addActionButton(Integer.valueOf(msg));
         } else {
             super.onMessageReceived(messageEvent);
         }

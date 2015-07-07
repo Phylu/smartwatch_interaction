@@ -68,6 +68,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     public void createStandardNotification(String locationName) {
 
+        if(mGoogleApiClient.isConnected()) {
+            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.action_button_notification), locationName);
+            t.start();
+        } else {
+            Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();
+        }
+
+        /*
         CharSequence title = getString(getResources().getIdentifier(locationName, "string", getPackageName()));
 
         // Create an intent for the vote_up action
@@ -107,7 +115,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         // Build the notification and issues it with notification manager.
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-
+        */
     }
 
     public void createTwoButtonNotification(final String locationName) {
