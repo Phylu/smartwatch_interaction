@@ -48,7 +48,7 @@ public class SwipeNotificationActivity extends VotingActivity {
 
         // Get text and image from the identifier
         String text = VotingHelper.getLocationName(this, location);
-        Drawable background = VotingHelper.getLocationImage(this, text);
+        Drawable background = VotingHelper.getLocationDrawable(this, text);
 
         View view = findViewById(R.id.swipe_background);
         view.setBackground(background);

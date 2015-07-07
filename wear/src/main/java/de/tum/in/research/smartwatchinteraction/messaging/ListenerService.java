@@ -5,9 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -39,6 +37,9 @@ public class ListenerService extends WearableListenerService {
         } else if (messageEvent.getPath().equals(getResources().getString(R.string.two_button_notification))) {
             vibrate();
             startTwoButtonNotification(msg);
+        } else if (messageEvent.getPath().equals(getResources().getString(R.string.action_button_notification))) {
+            vibrate();
+            startActionButtonNotification(msg);
         } else {
             super.onMessageReceived(messageEvent);
         }
@@ -53,7 +54,7 @@ public class ListenerService extends WearableListenerService {
     private void startActionButtonNotification(String location) {
 
         CharSequence title = VotingHelper.getLocationName(this, location);
-        BitmapDrawable backgroundImage = (BitmapDrawable) VotingHelper.getLocationImage(this, location);
+        Bitmap backgroundImage = VotingHelper.getLocationBitmap(this, location);
 
         // Create an intent for the vote_up action
         Intent actionVoteUpIntent = new Intent(this, ActionButtonNotificationActivity.class); // Switch to Vote Activity
@@ -88,7 +89,7 @@ public class ListenerService extends WearableListenerService {
                         .extend(new NotificationCompat.WearableExtender()
                                         .addAction(actionVoteUp)
                                         .addAction(actionVoteDown)
-                                        .setBackground(backgroundImage.getBitmap())
+                                        .setBackground(backgroundImage)
                         );
 
         // Get an instance of the NotificationManager service

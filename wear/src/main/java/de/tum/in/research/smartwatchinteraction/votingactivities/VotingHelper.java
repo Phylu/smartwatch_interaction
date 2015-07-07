@@ -1,6 +1,8 @@
 package de.tum.in.research.smartwatchinteraction.votingactivities;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 
 import de.tum.in.research.smartwatchinteraction.R;
@@ -15,13 +17,24 @@ public class VotingHelper {
      * @param location
      * @return
      */
-    public static Drawable getLocationImage(Context context, String location) {
+    public static Drawable getLocationDrawable(Context context, String location) {
         if (location.equals(context.getResources().getString(R.string.lmu_mensa))) {
             return context.getResources().getDrawable(R.drawable.lmu_mensa, null);
         } else if (location.equals(context.getResources().getString(R.string.lmu_losteria))) {
             return context.getResources().getDrawable(R.drawable.lmu_losteria, null);
         } else if (location.equals(context.getResources().getString(R.string.lmu_tijuana))) {
             return context.getResources().getDrawable(R.drawable.lmu_tijuana, null);
+        }
+        return null;
+    }
+
+    public static Bitmap getLocationBitmap(Context context, String location) {
+        if (location.equals(context.getResources().getString(R.string.lmu_mensa))) {
+            return BitmapFactory.decodeResource(context.getResources(), R.drawable.lmu_mensa);
+        } else if (location.equals(context.getResources().getString(R.string.lmu_losteria))) {
+            return BitmapFactory.decodeResource(context.getResources(), R.drawable.lmu_losteria);
+        } else if (location.equals(context.getResources().getString(R.string.lmu_tijuana))) {
+            return BitmapFactory.decodeResource(context.getResources(), R.drawable.lmu_tijuana);
         }
         return null;
     }
