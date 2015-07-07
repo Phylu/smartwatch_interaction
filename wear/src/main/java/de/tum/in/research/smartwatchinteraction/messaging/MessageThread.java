@@ -30,7 +30,9 @@ public class MessageThread extends Thread {
             Log.d("DEBUG", "Sending to: " + node.getDisplayName());
             Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), method, voting.getBytes()).await();
         }
-        Looper.myLooper().quit();
+        if (Looper.myLooper() != null) {
+            Looper.myLooper().quit();
+        }
     }
 
 }

@@ -42,7 +42,9 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Looper.prepare();
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
 
         Log.d("SenderService", "Started");
         Bundle extras = intent.getExtras();
