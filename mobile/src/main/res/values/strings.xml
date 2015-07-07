@@ -11,6 +11,9 @@
 
     <!-- Notification Messages -->
     <string name="error_three_notifications_send">You have send 3 Notifications already.</string>
+    <string name="response_received_swipe">Swipe Response Received</string>
+    <string name="response_received_two_button">Two Button Response Received</string>
+    <string name="response_received_action_button">Action Button Response Received</string>
 
     <!-- Different Notification Types -->
     <string name="action_button_notification">Action Button Notification</string>

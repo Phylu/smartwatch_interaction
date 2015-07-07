@@ -14,12 +14,12 @@ public class MessageThread extends Thread {
 
     GoogleApiClient mGoogleApiClient;
     String method;
-    String locationName;
+    String voting;
 
-    public MessageThread(GoogleApiClient mGoogleApiClient, String method, String locationName) {
+    public MessageThread(GoogleApiClient mGoogleApiClient, String method, String voting) {
             this.mGoogleApiClient = mGoogleApiClient;
             this.method = method;
-            this.locationName = locationName;
+            this.voting = voting;
         };
 
 
@@ -27,7 +27,7 @@ public class MessageThread extends Thread {
         NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
         for (Node node : nodes.getNodes()) {
             Log.d("DEBUG", "Sending to: " + node.getDisplayName());
-            Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), method, locationName.getBytes()).await();
+            Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), method, voting.getBytes()).await();
         }
     }
 

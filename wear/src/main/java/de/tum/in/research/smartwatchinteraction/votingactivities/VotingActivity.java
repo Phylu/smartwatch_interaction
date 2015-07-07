@@ -82,7 +82,7 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
      */
     public void voteUp(View view) {
         if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.swipe_notification), "Foo");
+            MessageThread t = new MessageThread(mGoogleApiClient, getClassIdentifier(), "1");
             t.start();
         } else {
             Toast.makeText(this, "Phone not connected", Toast.LENGTH_LONG).show();
@@ -101,7 +101,7 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
      */
     public void voteDown(View view) {
         if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.swipe_notification), "Bar");
+            MessageThread t = new MessageThread(mGoogleApiClient, getClassIdentifier(), "-1");
             t.start();
         } else {
             Toast.makeText(this, "Phone not connected", Toast.LENGTH_LONG).show();
@@ -112,6 +112,21 @@ public abstract class VotingActivity extends Activity implements GoogleApiClient
                 ConfirmationActivity.SUCCESS_ANIMATION);
         startActivity(intent);
         this.finish();
+    }
+
+    /**
+     * Return a class identifier to be send via msg
+     * @return
+     */
+    private String getClassIdentifier() {
+        /*if (this.getClass() == ActionButonNotificationActivity.class) {
+            return getResources().getString(R.string.action_button_notification);
+        } else*/ if (this.getClass() == TwoButtonNotificationActivity.class) {
+            return getResources().getString(R.string.two_button_notification);
+        } else if (this.getClass() == SwipeNotificationActivity.class) {
+            return getResources().getString(R.string.swipe_notification);
+        }
+        return "";
     }
 
     // These three methods are needed for the messaging connection to the wear device

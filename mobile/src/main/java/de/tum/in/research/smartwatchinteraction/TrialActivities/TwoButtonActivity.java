@@ -28,6 +28,7 @@ public class TwoButtonActivity extends TrialActivity {
         }
         if(mGoogleApiClient.isConnected()) {
             MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.two_button_notification), locations[counter]);
+            participant.startCounter();
             t.start();
         } else {
             Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();

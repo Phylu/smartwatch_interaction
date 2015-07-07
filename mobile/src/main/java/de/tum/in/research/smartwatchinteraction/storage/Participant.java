@@ -1,11 +1,14 @@
 package de.tum.in.research.smartwatchinteraction.storage;
 
-import java.io.Serializable;
+import android.util.Log;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import de.tum.in.research.smartwatchinteraction.TrialActivities.ActionButtonActivity;
 import de.tum.in.research.smartwatchinteraction.TrialActivities.SwipeActivity;
 import de.tum.in.research.smartwatchinteraction.TrialActivities.TrialActivity;
 import de.tum.in.research.smartwatchinteraction.TrialActivities.TwoButtonActivity;
-import de.tum.in.research.smartwatchinteraction.TrialActivities.ActionButtonActivity;
 
 /**
  * Created by janosch on 15.06.15.
@@ -20,6 +23,7 @@ public class Participant {
     Trial[] swipe = new Trial[3];
     Trial[] two_button = new Trial[3];
     Trial[] action_button = new Trial[3];
+    long counterStart;
 
     private Participant() {
     }
@@ -68,37 +72,41 @@ public class Participant {
 
     /**
      * Add a new Swipe Voting element
+     * @param vote
      */
-    public void addSwipe(int timer, int vote) {
+    public void addSwipe(int vote) {
         for (int i = 0; i < 3; i++) {
             if (swipe[i] == null) {
-                swipe[i] = new Trial(timer, vote);
+                swipe[i] = new Trial(getCounter(), vote);
+                Log.d("DEBUG: ", "Creating new Swipe Trial: " + swipe[i]);
+                break;
             }
         }
     }
 
     /**
      * Add a new TwoButton Voting element
-     * @param timer
      * @param vote
      */
-    public void addTwoButton(int timer, int vote) {
+    public void addTwoButton(int vote) {
         for (int i = 0; i < 3; i++) {
             if (two_button[i] == null) {
-                two_button[i] = new Trial(timer, vote);
+                two_button[i] = new Trial(getCounter(), vote);
+                Log.d("DEBUG: ", "Creating new Two Button Trial: " + two_button[i]);
+                break;
             }
         }
     }
 
     /**
      * Add a new AcitonButton Voting element
-     * @param timer
      * @param vote
      */
-    public void addActionButton(int timer, int vote) {
+    public void addActionButton(int vote) {
         for (int i = 0; i < 3; i++) {
             if (action_button[i] == null) {
-                action_button[i] = new Trial(timer, vote);
+                action_button[i] = new Trial(getCounter(), vote);
+                break;
             }
         }
     }
@@ -114,6 +122,30 @@ public class Participant {
         result += "two_buttons: " + two_button[0] + ", " + two_button[1] + ", " + two_button[2] + "\n";
         result += "swipes: " + swipe[0] + ", " + swipe[1] + ", " + swipe[2] + "\n";
         return  result;
+    }
+
+    /**
+     * Set the counter start time
+     */
+    public void startCounter() {
+        counterStart = new Date().getTime();
+    }
+
+    /**
+     * Return the difference between the counter start time and now
+     * @return  Counter time in Miliseconds
+     */
+    private long getCounter() {
+        long now = new Date().getTime();
+        return (now - counterStart);
+    }
+
+    /**
+     * Store the participant object on disk
+     */
+    public void store() {
+        Log.d("DEBUG: ", this.toString());
+        // TODO: implement
     }
 
 

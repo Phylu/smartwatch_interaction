@@ -109,7 +109,7 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         for (int i = 0; i < 3; i++) {
             // If this is the last view, go to StartActivity
             if (i == 2) {
-                // TODO: Write Participant to log file
+                participant.store();
                 intent = new Intent(this, StartActivity.class);
                 startActivity(intent);
                 break;

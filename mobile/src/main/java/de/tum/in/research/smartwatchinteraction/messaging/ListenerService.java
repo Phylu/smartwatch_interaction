@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Vibrator;
 import android.provider.Telephony;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
@@ -28,11 +29,13 @@ public class ListenerService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         String msg = new String(messageEvent.getData());
-        Log.i("test", "onMessageReceived(): " + msg);
+        Log.i("test", "onMessageReceived(): " + messageEvent.getPath() + "/" + msg);
         if(messageEvent.getPath().equals(getResources().getString(R.string.swipe_notification))) {
-            participant.addSwipe(1, 1);
+            Toast.makeText(getApplicationContext(), getString(R.string.response_received_swipe), Toast.LENGTH_SHORT).show();
+            participant.addSwipe(Integer.valueOf(msg));
         } else if (messageEvent.getPath().equals(getResources().getString(R.string.two_button_notification))) {
-            participant.addTwoButton(1, 1);
+            Toast.makeText(getApplicationContext(), getString(R.string.response_received_two_button), Toast.LENGTH_SHORT).show();
+            participant.addTwoButton(Integer.valueOf(msg));
         } else {
             super.onMessageReceived(messageEvent);
         }
