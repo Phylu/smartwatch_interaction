@@ -1,153 +1,144 @@
 package de.tum.in.research.smartwatchinteraction;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.MessageApi;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
-import com.google.android.gms.wearable.Wearable;
+import java.security.SecureRandom;
+import java.util.Random;
 
-import java.util.Objects;
+import de.tum.in.research.smartwatchinteraction.storage.Participant;
 
-import de.tum.in.research.smartwatchinteraction.messaging.MessageThread;
+public class MainActivity extends Activity {
 
-public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
-
-
-    int NOTIFICATION_ID = 1;
-    private GoogleApiClient mGoogleApiClient;
+    public static final String PREFS_NAME = "SmartwatchInteractionPrefs";
+    SharedPreferences settings;
+    Participant participant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = getSharedPreferences(PREFS_NAME, 0);
         setContentView(R.layout.activity_main);
-
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
-
-    public void createNotification(View view) {
-        System.out.println("createNotification Invoked!");
-        System.out.println("Tag gotten: " + view.getTag());
-
-        String tag = String.valueOf(view.getTag());
-        String[] tagParts = tag.split(":");
-
-        if (tagParts[0].equals("standard")) {
-            createStandardNotification(tagParts[1]);
-        }
-        if (tagParts[0].equals("two_button")) {
-            createTwoButtonNotification(tagParts[1]);
-        }
-        if (tagParts[0].equals("swipe")) {
-            createSwipeNotification(tagParts[1]);
-        }
-
-    }
-
-    public void createStandardNotification(String locationName) {
-
-        if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.action_button_notification), locationName);
-            t.start();
-        } else {
-            Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();
-        }
-
-        /*
-        CharSequence title = getString(getResources().getIdentifier(locationName, "string", getPackageName()));
-
-        // Create an intent for the vote_up action
-        Intent actionIntent = new Intent(this, NullActivity.class); // Switch to Vote Activity
-        PendingIntent actionPendingIntent =
-                PendingIntent.getActivity(this, 0, actionIntent, 0);
-
-        // Create the action
-        NotificationCompat.Action actionVoteUp =
-                new NotificationCompat.Action.Builder(R.drawable.thumb_up_white,
-                        getString(R.string.vote_up), actionPendingIntent)
-                        .build();
-        NotificationCompat.Action actionVoteDown =
-                new NotificationCompat.Action.Builder(R.drawable.thumb_down_white,
-                        getString(R.string.vote_down), actionPendingIntent)
-                        .build();
-
-        // Build Main Notification
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(title)
-                        .setContentText(getString(R.string.notification_text))
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setAutoCancel(true)
-                        .extend(new NotificationCompat.WearableExtender()
-                                        .addAction(actionVoteUp)
-                                        .addAction(actionVoteDown)
-                                        .setBackground(BitmapFactory.decodeResource(
-                                                getResources(), R.drawable.mensa_leopoldstrasse
-                                        ))
-                        );
-
-        // Get an instance of the NotificationManager service
-        NotificationManagerCompat notificationManager =
-                NotificationManagerCompat.from(this);
-
-        // Build the notification and issues it with notification manager.
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-        */
-    }
-
-    public void createTwoButtonNotification(final String locationName) {
-        if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.two_button_notification), locationName);
-            t.start();
-        } else {
-            Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void createSwipeNotification(String locationName) {
-        if(mGoogleApiClient.isConnected()) {
-            MessageThread t = new MessageThread(mGoogleApiClient, getResources().getString(R.string.swipe_notification), locationName);
-            t.start();
-        } else {
-            Toast.makeText(this, "Wear not connected", Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-        Log.d("test", "onConnected");
+    /**
+     * Clear everything when the app resumes
+     */
+    protected void onResume() {
+        super.onResume();
+        reset();
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-
+    /**
+     * Clear all fields
+     */
+    private void reset() {
+        resetParticipantTextField();
+        deactivateButton();
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e("test", "Failed to connect to Google API Client");
+    public void createParticipant(View view) {
+
+        // Create Participant Number
+        int vpn_nr = createNextParticipantNumber();
+        updateParticipantTextField(vpn_nr);
+
+        // Create Group Number for Participant
+        int group_nr = createRandomGroupNumber();
+
+        // Create Storage element
+        participant = Participant.getInstance();
+        participant.newParticipant(vpn_nr, group_nr);
+        Log.d("DEBUG: ", participant.toString());
+
+        // Let the user procceed
+        activateButton();
+    }
+
+    /**
+     * Create the number of the next participant
+     * @return
+     */
+    private int createNextParticipantNumber() {
+        int vpn_nr = settings.getInt("vpn_nr", 0);
+        vpn_nr++;
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("vpn_nr", vpn_nr);
+        editor.commit();
+
+        return vpn_nr;
+    }
+
+    /**
+     * Write the vpn_nr on the screen
+     * @param vpn_nr
+     */
+    private void updateParticipantTextField(int vpn_nr) {
+        TextView vpn_nr_textfield = (TextView) findViewById(R.id.vpn_nr);
+        vpn_nr_textfield.setText(String.format(getString(R.string.note_vpn_nr), vpn_nr));
+    }
+
+    /**
+     * Reset the Text field containing participant information
+     */
+    private void resetParticipantTextField() {
+        TextView vpn_nr_textfield = (TextView) findViewById(R.id.vpn_nr);
+        vpn_nr_textfield.setText("");
+    }
+
+    /**
+     * Create a random participant number between 1 and 6
+     * @return
+     */
+    private int createRandomGroupNumber() {
+        int min = 1;
+        int max = 6;
+
+        Random r = new SecureRandom();
+        return r.nextInt(max - min + 1) + min;
+    }
+
+    /**
+     * Activate the forward button
+     */
+    private void activateButton() {
+        ImageButton forwardButton = (ImageButton) findViewById(R.id.forward_button);
+        forwardButton.setBackground(getResources().getDrawable(R.drawable.arrow_right));
+
+        forwardButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                forwardButtonClick(v);
+            }
+        });
+    }
+
+    /**
+     * Deactivate the forward button
+     */
+    private void deactivateButton() {
+        ImageButton forwardButton = (ImageButton) findViewById(R.id.forward_button);
+        forwardButton.setBackground(getResources().getDrawable(R.drawable.arrow_right_grey));
+
+        forwardButton.setOnClickListener(null);
+    }
+
+    /**
+     * Forward to the correct Method page based on the group of the participant
+     * @param view
+     */
+    public void forwardButtonClick(View view) {
+        Intent intent = new Intent(this, participant.order[0]);
+        startActivity(intent);
+        finish();
     }
 }
