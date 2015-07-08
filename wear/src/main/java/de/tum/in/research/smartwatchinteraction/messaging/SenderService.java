@@ -29,42 +29,51 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
     @Override
     public void onCreate() {
         super.onCreate();
-        // Create wearable connection
 
+
+        Log.d("SenderService", "Created");
+
+        // Looper to make sure, that this service keeps alive until message is send to phone
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+
+        // Create wearable connection
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        mGoogleApiClient.connect();
-
     }
 
     @Override
+    /**
+     * Handle intent that should send msg to phone
+     */
     protected void onHandleIntent(Intent intent) {
-        if (Looper.myLooper() == null) {
-            Looper.prepare();
-        }
+        mGoogleApiClient.blockingConnect();
 
-        Log.d("SenderService", "Started");
+        Log.d("SenderService", "Handling Intent");
         Bundle extras = intent.getExtras();
+        if (extras != null) {
         String mClass = extras.getString("class");
-        int vote = Integer.valueOf(extras.getString("vote"));
-        if (vote == 1) {
-            voteUp(mClass);
-        } else if (vote == -1) {
-            voteDown(mClass);
+            int vote = Integer.valueOf(extras.getString("vote"));
+            if (vote == 1) {
+                voteUp(mClass);
+            } else if (vote == -1) {
+                voteDown(mClass);
+            }
+            Looper.loop();
         }
-
-        Looper.loop();
     }
 
     /**
      * Vote something up
+     *
      * @param mClass
      */
     public void voteUp(String mClass) {
-        if(mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected()) {
             MessageThread t = new MessageThread(mGoogleApiClient, mClass, "1");
             t.start();
         } else {
@@ -80,10 +89,11 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
 
     /**
      * Vote something down
+     *
      * @param mClass
      */
     public void voteDown(String mClass) {
-        if(mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected()) {
             MessageThread t = new MessageThread(mGoogleApiClient, mClass, "-1");
             t.start();
         } else {
@@ -99,7 +109,7 @@ public class SenderService extends IntentService implements GoogleApiClient.Conn
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        Log.d("SenderService", "Connected to Phone");
     }
 
     @Override

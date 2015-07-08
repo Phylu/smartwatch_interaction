@@ -5,19 +5,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.wearable.activity.ConfirmationActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -45,7 +36,6 @@ public class ListenerService extends WearableListenerService  {
             vibrate();
             startTwoButtonNotification(msg);
         } else if (messageEvent.getPath().equals(getResources().getString(R.string.action_button_notification))) {
-            vibrate();
             startActionButtonNotification(msg);
         } else {
             super.onMessageReceived(messageEvent);
