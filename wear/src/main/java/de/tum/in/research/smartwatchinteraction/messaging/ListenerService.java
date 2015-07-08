@@ -68,11 +68,11 @@ public class ListenerService extends WearableListenerService  {
 
         // Create the action
         NotificationCompat.Action actionVoteUp =
-                new NotificationCompat.Action.Builder(R.drawable.thumb_up_white,
+                new NotificationCompat.Action.Builder(R.drawable.thumb_up_white_300,
                         getString(R.string.vote_up), actionVoteUpPendingIntent)
                         .build();
         NotificationCompat.Action actionVoteDown =
-                new NotificationCompat.Action.Builder(R.drawable.thumb_down_white,
+                new NotificationCompat.Action.Builder(R.drawable.thumb_down_white_300,
                         getString(R.string.vote_down), actionVoteDownPendingIntent)
                         .build();
 
