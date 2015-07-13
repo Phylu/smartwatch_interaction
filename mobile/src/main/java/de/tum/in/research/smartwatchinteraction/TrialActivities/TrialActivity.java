@@ -109,6 +109,7 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
             if (i == 2) {
                 participant.store(getApplicationContext());
                 intent = new Intent(this, MainActivity.class);
+                intent.putExtra("new_experiment", true);
                 startActivity(intent);
                 break;
             }

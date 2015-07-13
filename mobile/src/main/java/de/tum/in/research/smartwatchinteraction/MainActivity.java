@@ -35,7 +35,15 @@ public class MainActivity extends Activity {
      */
     protected void onResume() {
         super.onResume();
-        reset();
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Boolean newExperiment = extras.getBoolean("new_experiment", false);
+            if (newExperiment == true) {
+                reset();
+            }
+        }
     }
 
     /**
