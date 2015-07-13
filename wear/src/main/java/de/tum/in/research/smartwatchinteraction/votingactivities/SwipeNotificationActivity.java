@@ -1,6 +1,8 @@
 package de.tum.in.research.smartwatchinteraction.votingactivities;
 
 import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ public class SwipeNotificationActivity extends VotingActivity {
     private GestureDetector mDetector;
     private SwipeView redSwipeView;
     private SwipeView greenSwipeView;
+    private AnimatorSet redSwipeAnimation;
+    private AnimatorSet greenSwipeAnimation;
     private BoxInsetLayout mViewLayout;
     private float lastX;
     private short lastDirection;
@@ -46,8 +50,20 @@ public class SwipeNotificationActivity extends VotingActivity {
         redSwipeView = new SwipeView(this, getResources().getColor(R.color.red));
         greenSwipeView = new SwipeView(this, getResources().getColor(R.color.green));
 
+        // Move Green Overlay to the right of the screen
+        greenSwipeView.setX(320);
+
+        // Draw the overlays
         mViewLayout.addView(redSwipeView);
         mViewLayout.addView(greenSwipeView);
+
+        // Animate the overlays
+        redSwipeAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.swipe_anim_red);
+        redSwipeAnimation.setTarget(redSwipeView);
+
+        // Animate the overlays
+        greenSwipeAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.swipe_anim_green);
+        greenSwipeAnimation.setTarget(greenSwipeView);
 
         switchOnScreen();
 
@@ -98,26 +114,14 @@ public class SwipeNotificationActivity extends VotingActivity {
     @Override public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        Animation greenSwipeAnimation = new TranslateAnimation(0, 320, 0, 0);
-        greenSwipeAnimation.setDuration(1000);
-
-        AnimationSet greenSwipeAnimationSet = new AnimationSet(true);
-        greenSwipeAnimationSet.addAnimation(greenSwipeAnimation);
-
-//        Animation redSwipeAnimation = AnimationUtils.loadAnimation(this, R.anim.swipe_anim);
-//        redSwipeAnimation.setStartTime(0);
-
-//        redSwipeView.setAnimation(redSwipeAnimation);
-
-//        greenSwipeAnimationSet.setStartTime(300);
-        greenSwipeView.startAnimation(greenSwipeAnimationSet);
-//        greenSwipeView.setAnimation(greenSwipeAnimationSet);
-
+        redSwipeAnimation.start();
+        greenSwipeAnimation.start();
     }
 
         // Capture long presses to exit the activity
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        cancelAnimations();
 
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             removeBothOverlays();
@@ -128,6 +132,11 @@ public class SwipeNotificationActivity extends VotingActivity {
             }
         }
         return mDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
+    }
+
+    private void cancelAnimations() {
+        redSwipeAnimation.cancel();
+        greenSwipeAnimation.cancel();
     }
 
     private void createOverlay(SwipeView overlay, float x) {
