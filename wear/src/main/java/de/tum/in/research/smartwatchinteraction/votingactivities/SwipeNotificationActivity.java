@@ -109,14 +109,14 @@ public class SwipeNotificationActivity extends VotingActivity {
             }
         });
 
-    }
-
-    @Override public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
         redSwipeAnimation.start();
         greenSwipeAnimation.start();
+
     }
+
+//    @Override public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//    }
 
         // Capture long presses to exit the activity
     @Override
@@ -126,9 +126,9 @@ public class SwipeNotificationActivity extends VotingActivity {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             removeBothOverlays();
             if (lastDirection == SwipeNotificationActivity.UP && lastX < 160) {
-                voteUp(greenSwipeView);
+                voteUp(mViewLayout);
             } else if (lastDirection == SwipeNotificationActivity.DOWN && lastX > 160) {
-                voteDown(redSwipeView);
+                voteDown(mViewLayout);
             }
         }
         return mDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
