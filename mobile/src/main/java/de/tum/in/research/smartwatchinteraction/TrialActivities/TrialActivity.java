@@ -18,6 +18,7 @@ import com.google.android.gms.wearable.Wearable;
 import de.tum.in.research.smartwatchinteraction.R;
 import de.tum.in.research.smartwatchinteraction.MainActivity;
 import de.tum.in.research.smartwatchinteraction.storage.Participant;
+import de.tum.in.research.smartwatchinteraction.storage.Trial;
 
 public abstract class TrialActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -25,7 +26,6 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
     public static final String PREFS_NAME = "SmartwatchInteractionPrefs";
     protected  SharedPreferences settings;
     protected Participant participant;
-    protected int counter = 0;
     protected GoogleApiClient mGoogleApiClient;
     protected String[] locations;
 
@@ -58,6 +58,8 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
                 .build();
         mGoogleApiClient.connect();
 
+        activateButtonIfTrialsFinished();
+
     }
 
     @Override
@@ -65,12 +67,26 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         super.onResume();
     }
 
-    protected void activateForwardButtonIfCounterAboveThree() {
-        if (counter >= 3) {
+    @Override
+    protected void onNewIntent(Intent intent) {
+        activateButtonIfTrialsFinished();
+    }
+
+    protected int getCounter() {
+        Trial[] trials = getTrials();
+        for (int i = 0; i < 3; i++) {
+            if (trials[i] == null) {
+                return i;
+            }
+        }
+        return 3;
+    }
+
+    private void activateButtonIfTrialsFinished() {
+        if (getCounter() >= 3) {
             activateButton();
         }
     }
-
 
     /**
      * The forward button gets activated
@@ -86,16 +102,17 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         });
     }
 
+
     /**
      * How should a notification be invoked
      * @param view
      */
     public boolean createNotification(View view) {
-        if (counter >= 3) {
-            Toast.makeText(getApplicationContext(), getString(R.string.error_three_notifications_send), Toast.LENGTH_SHORT).show();
-            return false;
+        if (getCounter() < 3) {
+            return true;
         }
-        return true;
+        Toast.makeText(getApplicationContext(), getString(R.string.error_three_notifications_send), Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     /**
@@ -130,13 +147,13 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) {    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.e("test", "Failed to connect to Google API Client");
     }
+
+    protected abstract Trial[] getTrials();
 
 }

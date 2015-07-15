@@ -27,9 +27,22 @@ public class Participant {
     int vpn_nr;
     int group;
     public Class<TrialActivity>[] order;
-    Trial[] swipe;
-    Trial[] two_button;
-    Trial[] action_button;
+
+    public Trial[] getSwipeTrials() {
+        return swipe;
+    }
+
+    public Trial[] getTwoButtonTrials() {
+        return two_button;
+    }
+
+    public Trial[] getActionButtonTrials() {
+        return action_button;
+    }
+
+    private Trial[] swipe;
+    private Trial[] two_button;
+    private Trial[] action_button;
     long counterStart;
 
     private Participant() {

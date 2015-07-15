@@ -19,9 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrialActivities.ActionButtonActivity"></activity>
-        <activity android:name=".TrialActivities.TwoButtonActivity"></activity>
-        <activity android:name=".TrialActivities.SwipeActivity"></activity>
+        <activity android:name=".TrialActivities.ActionButtonActivity" android:launchMode="singleTop"></activity>
+        <activity android:name=".TrialActivities.TwoButtonActivity" android:launchMode="singleTop"></activity>
+        <activity android:name=".TrialActivities.SwipeActivity" android:launchMode="singleTop"></activity>
 
         <service android:name=".messaging.ListenerService">
         <intent-filter>
