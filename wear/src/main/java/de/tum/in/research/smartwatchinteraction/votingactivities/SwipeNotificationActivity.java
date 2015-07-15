@@ -33,8 +33,10 @@ public class SwipeNotificationActivity extends VotingActivity {
     private AnimatorSet redSwipeAnimation;
     private AnimatorSet greenSwipeAnimation;
     private BoxInsetLayout mViewLayout;
+    private float firstX;
     private float lastX;
     private short lastDirection;
+    private float lastDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +96,15 @@ public class SwipeNotificationActivity extends VotingActivity {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                                     float distanceY) {
+                firstX = e1.getX();
                 lastX = e2.getX();
+                lastDistance = e1.getX() - e2.getX();
                 // Check direction to draw correct color
-                if (e1.getX() - e2.getX() > 0) {
+                if (e1.getX() > 200 /*&& e1.getX() - e2.getX() > 0*/) {
                     createOverlay(greenSwipeView, e2.getX());
                     removeOverlay(redSwipeView);
                     lastDirection = SwipeNotificationActivity.UP;
-                } else {
+                } else if (e1.getX() < 120 /*&& e1.getX() - e2.getX() < 0*/) {
                     createOverlay(redSwipeView, e2.getX() - 320);
                     removeOverlay(greenSwipeView);
                     lastDirection = SwipeNotificationActivity.DOWN;
@@ -125,9 +129,9 @@ public class SwipeNotificationActivity extends VotingActivity {
 
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             removeBothOverlays();
-            if (lastDirection == SwipeNotificationActivity.UP && lastX < 160) {
+            if (lastDirection == SwipeNotificationActivity.UP && firstX > 200 && lastX < 160 && lastDistance > 50) {
                 voteUp(mViewLayout);
-            } else if (lastDirection == SwipeNotificationActivity.DOWN && lastX > 160) {
+            } else if (lastDirection == SwipeNotificationActivity.DOWN && firstX < 120 && lastX > 160 && lastDistance < -50) {
                 voteDown(mViewLayout);
             }
         }
