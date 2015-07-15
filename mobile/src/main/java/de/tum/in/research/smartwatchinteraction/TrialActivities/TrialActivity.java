@@ -68,10 +68,17 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
     }
 
     @Override
+    /**
+     * Check if we need to activate the forward button when a new message is received
+     */
     protected void onNewIntent(Intent intent) {
         activateButtonIfTrialsFinished();
     }
 
+    /**
+     * See which notifications have been rated already
+     * @return
+     */
     protected int getCounter() {
         Trial[] trials = getTrials();
         for (int i = 0; i < 3; i++) {
@@ -82,6 +89,9 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         return 3;
     }
 
+    /**
+     * If all notifications are rated, enable the forward button
+     */
     private void activateButtonIfTrialsFinished() {
         if (getCounter() >= 3) {
             activateButton();
@@ -154,6 +164,10 @@ public abstract class TrialActivity extends Activity implements GoogleApiClient.
         Log.e("test", "Failed to connect to Google API Client");
     }
 
+    /**
+     * Return the Trial array that should be used by this activity
+     * @return  Trial[] depending on the Activity Type
+     */
     protected abstract Trial[] getTrials();
 
 }

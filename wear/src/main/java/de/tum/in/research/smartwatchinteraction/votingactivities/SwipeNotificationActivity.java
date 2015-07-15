@@ -89,6 +89,9 @@ public class SwipeNotificationActivity extends VotingActivity {
 
 
             @Override
+            /**
+             * Show the dismiss overlay on a long press
+             */
             public void onLongPress(MotionEvent ev) {
                 mDismissOverlay.show();
             }
@@ -99,12 +102,14 @@ public class SwipeNotificationActivity extends VotingActivity {
                 firstX = e1.getX();
                 lastX = e2.getX();
                 lastDistance = e1.getX() - e2.getX();
-                // Check direction to draw correct color
-                if (e1.getX() > 200 /*&& e1.getX() - e2.getX() > 0*/) {
+                // If we start on the right side of the screen, it is a vote up
+                if (e1.getX() > 200) {
                     createOverlay(greenSwipeView, e2.getX());
                     removeOverlay(redSwipeView);
                     lastDirection = SwipeNotificationActivity.UP;
-                } else if (e1.getX() < 120 /*&& e1.getX() - e2.getX() < 0*/) {
+                // If we start on the left side of the screen, it is a vote down
+                } else if (e1.getX() < 120) {
+                    // Overlay has to be right of current position, therefore substract screen size
                     createOverlay(redSwipeView, e2.getX() - 320);
                     removeOverlay(greenSwipeView);
                     lastDirection = SwipeNotificationActivity.DOWN;
@@ -118,42 +123,61 @@ public class SwipeNotificationActivity extends VotingActivity {
 
     }
 
-//    @Override public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//    }
-
-        // Capture long presses to exit the activity
     @Override
+    /**
+     * Capture all touch events
+     * Makes it posible to recognize, when a touch event has ended
+     */
     public boolean onTouchEvent(MotionEvent ev) {
+        // When somebody touches the screen, stop the animation
         cancelAnimations();
 
+        // If the finger is removed
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             removeBothOverlays();
+            // Check the direction of the voting, where the finger is currently and if a great enough distance is traveled
             if (lastDirection == SwipeNotificationActivity.UP && firstX > 200 && lastX < 160 && lastDistance > 50) {
                 voteUp(mViewLayout);
             } else if (lastDirection == SwipeNotificationActivity.DOWN && firstX < 120 && lastX > 160 && lastDistance < -50) {
                 voteDown(mViewLayout);
             }
         }
+
+        // Give the event to our EventDetector
         return mDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
     }
 
+    /**
+     * Cancel all animations
+     */
     private void cancelAnimations() {
         redSwipeAnimation.cancel();
         greenSwipeAnimation.cancel();
     }
 
+    /**
+     * Position the overlay on the screen
+     * @param overlay   Overlay to position
+     * @param x         X coordinate to show overlay
+     */
     private void createOverlay(SwipeView overlay, float x) {
         Log.d("DEBUG", "Creating overlay");
         overlay.setX(x);
         overlay.invalidate();
     }
 
+    /**
+     * Move the overlay out of the screen
+     * @param overlay   Overlay to remove
+     */
     private void removeOverlay(SwipeView overlay) {
         Log.d("DEBUG", "Removing overlay");
         overlay.setX(-320);
     }
 
+    /**
+     * Remove both overlays from the srceen
+     */
     private void removeBothOverlays() {
         removeOverlay(redSwipeView);
         removeOverlay(greenSwipeView);
