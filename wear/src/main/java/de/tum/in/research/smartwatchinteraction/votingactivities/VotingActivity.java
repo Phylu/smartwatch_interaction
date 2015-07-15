@@ -38,7 +38,8 @@ public abstract class VotingActivity extends Activity  {
     protected void switchOnScreen() {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     /**
