@@ -60,9 +60,9 @@ public class ListenerService extends WearableListenerService  {
         PendingIntent actionVoteUpPendingIntent =
                 PendingIntent.getActivity(this, 0, actionVoteUpIntent, 0);
 
-        // Create an intent for the vote_up action
+        // Create an intent for the vote_down action
         Intent actionVoteDownIntent = new Intent(this, ActionButtonNotificationActivity.class); // Switch to Vote Activity
-        actionVoteUpIntent.putExtra("vote", "1");
+        actionVoteUpIntent.putExtra("vote", "-1");
         PendingIntent actionVoteDownPendingIntent =
                 PendingIntent.getActivity(this, 0, actionVoteDownIntent, 0);
 
